@@ -15,6 +15,10 @@ class ParkPostType
         add_action('init', [$this, 'registerTaxonomies']);
         add_action('add_meta_boxes', [$this, 'addParkMetaBoxes']);
         add_action('save_post', [$this, 'saveParkMetaBoxes']);
+
+        // Admin Column Hooks
+        add_filter("manage_{$this->post_type}_posts_columns", [$this, 'setColumns']);
+        add_action("manage_{$this->post_type}_posts_custom_column", [$this, 'renderColumns'], 10, 2);
     }
 
     public function registerPostType(): void
@@ -89,6 +93,9 @@ class ParkPostType
         }
 
         if (isset($_POST['goose_aggression'])) {
+            $aggression = (int) $_POST['goose_aggression'];
+            // Clamp the value between 0 and 5
+            $aggression = max(0, min(5, $aggression));
             update_post_meta(
                 $postId, 
                 'goose_aggression', 
@@ -97,4 +104,16 @@ class ParkPostType
         }
     }
 
+    public function setColumns($columns)
+    {
+        $columns['goose_aggression'] = 'Goose Aggression';
+        return $columns;
+    }
+
+    public function renderColumns($column, $postId)
+    {
+        if ($column === 'goose_aggression') {
+            echo get_post_meta($postId, 'goose_aggression', true) ?: '0';
+        }
+    }
 }
