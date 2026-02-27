@@ -2,9 +2,6 @@
 
 namespace Grumpy\Guide;
 
-use function add_meta_box;
-use function wp_nonce_field;
-
 class ParkPostType
 {
     protected $postType = 'park';
