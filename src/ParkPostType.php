@@ -17,8 +17,8 @@ class ParkPostType
         add_action('save_post', [$this, 'saveParkMetaBoxes']);
 
         // Admin Column Hooks
-        add_filter("manage_{$this->post_type}_posts_columns", [$this, 'setColumns']);
-        add_action("manage_{$this->post_type}_posts_custom_column", [$this, 'renderColumns'], 10, 2);
+        add_filter("manage_{$this->postType}_posts_columns", [$this, 'setColumns']);
+        add_action("manage_{$this->postType}_posts_custom_column", [$this, 'renderColumns'], 10, 2);
     }
 
     public function registerPostType(): void
